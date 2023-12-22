@@ -22,13 +22,14 @@ def reviews(request):
         if form.is_valid():
             print(form.cleaned_data)   # dictionary
             return HttpResponseRedirect("/thank-you")
-        
-
-    form = ReviewForm()
-        # return render(request, "reviews/thankyou.html")
+    else:
+        form = ReviewForm()
+            
+    
+    # return render(request, "reviews/thankyou.html")
     return render(request, "reviews/reviews.html", {
         "form": form
-    })
+        })
 
 
 
