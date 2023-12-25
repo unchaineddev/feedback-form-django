@@ -1,6 +1,8 @@
-{% load static %}
+{% extends 'reviews/base.html' %}
 
-<!DOCTYPE html>
+
+
+{% comment %} <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,10 +10,35 @@
     <title>Your review</title>
    
     <link rel="stylesheet" href="{% static 'reviews/style.css' %}">
-</head>
+</head> {% endcomment %}
 
+
+{% block title %}Your Review{% endblock title %}
+
+
+{% block content %}
 
 <body>
+    <form action="/" method="POST">
+        {% csrf_token %}
+        {% for field in form %}
+        
+        <div class="form-control  {% if field.errors %}errors{% endif %}">
+            {{ field.label_tag }}
+            {{ field }}
+            {{  field.errors }}
+        </div>
+        
+        {% endfor %}
+
+        <button type="submit">Send</button>
+    </form>
+</body>
+
+{% endblock content %}
+
+
+{% comment %} <body>
     <form action="/" method="POST">
         {% csrf_token %}
         <!-- {% if has_error %}
@@ -29,7 +56,7 @@
             {{  form.user_name.errors }}
         </div> {% endcomment %}
 
-        {% for field in form %}
+        {% comment %} {% for field in form %}
         
         <div class="form-control  {% if field.errors %}errors{% endif %}">
             {{ field.label_tag }}
@@ -38,13 +65,13 @@
         </div>
         
         {% endfor %}
-        
+         {% endcomment %}
 
         
 
         
-
+{% comment %} 
         <button type="submit">Send</button>
     </form>
 </body>
-</html> 
+</html>   {% endcomment %}
