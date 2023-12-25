@@ -9,6 +9,8 @@ from .models import Review
 
 from django.views import View
 
+from django.views.generic.base import TemplateView
+
 
 # Class-based view
 class ReviewView(View):
@@ -73,5 +75,19 @@ class ReviewView(View):
 
 
 
-def thank_you(request):
-    return render(request, "reviews/thankyou.html")
+# def thank_you(request):
+#     return render(request, "reviews/thankyou.html")
+
+
+# using class-based view
+# class ThankYouView(View):
+#     def get(self, request):
+#         return render(request, "reviews/thankyou.html")
+
+class ThankYouView(TemplateView):
+    template_name = "reviews/thankyou.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["message"] = "This Works!"
+        return context
