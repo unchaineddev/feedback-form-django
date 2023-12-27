@@ -15,19 +15,32 @@ from django.views.generic import DetailView, ListView
 
 from django.views.generic.edit import FormView
 
+from django.views.generic.edit import CreateView
 
-# Class-based view
-class ReviewView(FormView):
-    form_class = ReviewForm
+
+# Class based view with CreateView
+
+class ReviewView(CreateView):   # labels not supported
+    model = Review
+    fields = "__all__"
+    # form_class = ReviewForm   # optional 
     template_name = 'reviews/reviews.html'
     success_url = '/thank-you'
 
 
-    def form_valid(self, form):
-        form.save()
-        return super().form_valid(form)
+
+# Class-based view with FormView
+# class ReviewView(FormView):
+#     form_class = ReviewForm
+#     template_name = 'reviews/reviews.html'
+#     success_url = '/thank-you'
 
 
+#     def form_valid(self, form):
+#         form.save()
+#         return super().form_valid(form)
+
+# Class-based view with View
 # class ReviewView(View):
 #     def get(self, request):
 #         form = ReviewForm()
