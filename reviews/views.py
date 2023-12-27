@@ -11,28 +11,41 @@ from django.views import View
 
 from django.views.generic.base import TemplateView
 
-from django.views.generic import ListView
+from django.views.generic import DetailView, ListView
+
+from django.views.generic.edit import FormView
 
 
 # Class-based view
-class ReviewView(View):
-    def get(self, request):
-        form = ReviewForm()
-        return render(request, "reviews/reviews.html", {
-            "form": form
-        })
+class ReviewView(FormView):
+    form_class = ReviewForm
+    template_name = 'reviews/reviews.html'
+    success_url = '/thank-you'
 
-    def post(self, request):   
-        form = ReviewForm(request.POST)
-        # form = ReviewForm(request.POST)
 
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect("/thank-you")
+    def form_valid(self, form):
+        form.save()
+        return super().form_valid(form)
 
-        return render(request, "reviews/reviews.html", {
-            "form": form
-        })
+
+# class ReviewView(View):
+#     def get(self, request):
+#         form = ReviewForm()
+#         return render(request, "reviews/reviews.html", {
+#             "form": form
+#         })
+
+#     def post(self, request):   
+#         form = ReviewForm(request.POST)
+#         # form = ReviewForm(request.POST)
+
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect("/thank-you")
+
+#         return render(request, "reviews/reviews.html", {
+#             "form": form
+#         })
         
 
 
@@ -119,14 +132,17 @@ class ReviewListView(ListView):
 #         return context
 
 
-class ReviewTextView(TemplateView):
-    template_name = "reviews/review_text.html"
+# class ReviewTextView(TemplateView):
+#     template_name = "reviews/review_text.html"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        review_id = kwargs["id"]   # gets id
-        selected_review = Review.objects.get(pk=review_id)
-        context["review"] = selected_review
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         review_id = kwargs["id"]   # gets id
+#         selected_review = Review.objects.get(pk=review_id)
+#         context["review"] = selected_review
     
-        return context
-    
+#         return context
+
+class ReviewTextView(DetailView):
+    template_name = "reviews/review_text.html"
+    model = Review
