@@ -11,6 +11,8 @@ from django.views import View
 
 from django.views.generic.base import TemplateView
 
+from django.views.generic import ListView
+
 
 # Class-based view
 class ReviewView(View):
@@ -92,18 +94,29 @@ class ThankYouView(TemplateView):
         context["message"] = "This Works!"
         return context
 
-
-class ReviewListView(TemplateView):
+class ReviewListView(ListView):
     template_name = "reviews/review_list.html"
+    model = Review
+    context_object_name = "reviews"
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
+    # # if you want to fiter data
+    # def get_queryset(self):
+    #     context  = super().get_queryset()
+    #     data = context.filter(rating__gt=4)
+    #     return data
 
 
-        reviews = Review.objects.all()
-        context['reviews'] = reviews
+# class ReviewListView(TemplateView):
+#     template_name = "reviews/review_list.html"
 
-        return context
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+
+
+#         reviews = Review.objects.all()
+#         context['reviews'] = reviews
+
+#         return context
 
 
 class ReviewTextView(TemplateView):
